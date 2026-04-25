@@ -1,11 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>SQL-01</title>
 </head>
+
 <body>
-    
+    <section class="container mt-5 pt-4 bg-light">
+        <div class="p-5 mb-4 bg-dark text-white rounded-3 shadow">
+            <div class="container-fluid py-2">
+                <h1 class="display-6 fw-bold">Ejercicio 01: Gestión de Clientes</h1>
+                <p class="col-md-10 fs-5 mt-3 text-light opacity-75">
+                    Domina el uso de <strong>PostgreSQL</strong> mediante la implementación de consultas
+                    estructuradas, manejo de llaves primarias y lógica de filtrado compleja.
+                </p>
+                <hr class="my-4 border-secondary">
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge rounded-pill border border-info text-info">PostgreSQL</span>
+                    <span class="badge rounded-pill border border-info text-info">DML / DDL</span>
+                    <span class="badge rounded-pill border border-info text-info">Operadores Lógicos</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor Principal del Ejercicio -->
+        <div class="container my-5">
+
+            <!-- Paso 1 -->
+            <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                <h2 class="h4 text-primary border-bottom pb-2">Paso 1: Creación de la Base de Datos</h2>
+                <div class="bg-dark shadow-lg border-start border-info border-4 rounded p-3 mb-3">
+                    <pre class="text-info mb-0"><code>CREATE DATABASE ejercicio_clientes;</code></pre>
+                </div>
+                <p class="text-muted small italic">Se inicia el proyecto creando la Base de Datos que alojará
+                    nuestras tablas de clientes.</p>
+            </section>
+
+            <!-- Paso 2 -->
+            <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                <h2 class="h4 text-primary border-bottom pb-2">Paso 2: Creación de la Tabla</h2>
+                <p>Aquí usamos <code>VARCHAR(12)</code> para el RUT (considerando puntos y guion) y definimos la
+                    <strong>Primary Key</strong>.
+                </p>
+                <div class="bg-dark shadow-lg border-start border-info border-4 rounded p-3 mb-3">
+                    <pre class="text-info mb-0"><code>CREATE TABLE clientes (
+    rut VARCHAR(12) PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    edad INTEGER
+);</code></pre>
+                </div>
+                <p class="text-muted small italic">Definimos la estructura de la tabla asegurando que el RUT sea único
+                    mediante el uso de una Llave Primaria.</p>
+            </section>
+
+            <!-- Paso 3 -->
+            <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                <h2 class="h4 text-primary border-bottom pb-2">Paso 3: Inserción de Datos</h2>
+                <div class="bg-dark shadow-lg border-start border-info border-4 rounded p-3 mb-3">
+                    <pre class="text-info mb-0"><code>INSERT INTO clientes (rut, nombre, edad) VALUES
+('12122122-2', 'Pepa', 33),
+('13133133-3', 'Diego', 21),
+('13675924-7', 'Mario', 85),
+('14144251-1', 'Paula', 35),
+('16555444-1', 'Muriela', 22),
+('18188188-8', 'Pato', 44);</code></pre>
+                </div>
+                <p class="text-muted small italic">Insertamos los registros iniciales para poder realizar las pruebas de
+                    consulta solicitadas.</p>
+
+                <!-- Imagen de los datos -->
+                <div class="text-center mt-4">
+                    <img src="img/datosTablaClientes.png" class="img-fluid rounded shadow border"
+                        alt="Vista de datos en pgAdmin">
+                    <p class="small text-secondary mt-2">Visualización de la tabla completa desde pgAdmin.</p>
+                </div>
+                <!-- Sección de Consultas y Filtrado -->
+                <hr class="my-5">
+                <h2 class="text-center mb-4">Consultas y Filtrado de Datos (DQL)</h2>
+
+                <!-- Consulta 1 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">1 Cliente específico por RUT</h2>
+                    <div class="bg-dark shadow-lg border-start border-info border-4 rounded p-3 mb-3">
+                        <pre class="text-info mb-0"><code>SELECT * FROM clientes WHERE rut = '13133133-3';</code></pre>
+                    </div>
+                    <p class="text-muted small italic">Búsqueda exacta utilizando la llave primaria para obtener los
+                        datos de un
+                        único cliente.</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_rut.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado consulta RUT específico">
+                    </div>
+                </section>
+
+                <!-- Consulta 2 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">2 Clientes mayores de 25 años</h2>
+                    <div class="bg-dark rounded p-3 mb-2">
+                        <pre class="text-info mb-0"><code>SELECT * FROM clientes WHERE edad > 25;</code></pre>
+                    </div>
+                    <p class="text-muted small italic">Aplicación de operadores de comparación para filtrar registros
+                        numéricos.</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_edad.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado clientes mayores de 25">
+                    </div>
+                </section>
+
+                <!-- Consulta 3 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">3 Clientes que NO se llamen 'Mario'</h2>
+                    <div class="bg-dark rounded p-3 mb-2">
+                        <pre class="text-info mb-0"><code>SELECT * FROM clientes WHERE nombre <> 'Mario';</code></pre>
+                    </div>
+                    <p class="text-muted small italic">Uso del operador de desigualdad para excluir registros
+                        específicos de los
+                        resultados.</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_nombre_excluido.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado exclusión de nombre">
+                    </div>
+                </section>
+
+                <!-- Consulta 4 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">4 Uso de patrones: RUT que inicia con '13'</h2>
+                    <div class="bg-dark rounded p-3 mb-2">
+                        <pre class="text-info mb-0"><code>SELECT * FROM clientes WHERE rut LIKE '13%';</code></pre>
+                    </div>
+                    <p class="text-muted small italic">El operador <code>LIKE</code> con el comodín <code>%</code>
+                        permite buscar
+                        coincidencias parciales al inicio de una cadena.</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_rut_inicio13.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado RUT inicial 13">
+                    </div>
+                </section>
+
+                <!-- Consulta 5 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">5 Todos los clientes con nombre finalizado en "a"
+                    </h2>
+                    <div class="bg-dark rounded p-3 mb-2">
+                        <pre class="text-info mb-0"><code>SELECT * FROM clientes WHERE nombre LIKE '%a';</code></pre>
+                    </div>
+                    <p class="text-muted small italic">Uso del comodín <code>%</code> al inicio de la cadena para
+                        filtrar registros
+                        cuyos nombres terminan con la vocal "a".</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_nombre_terminadoEn.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado nombres finalizados en a">
+                    </div>
+                </section>
+
+                <!-- Consulta 6 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">6 Nombre empezado en "P" y edad mayor a 34</h2>
+                    <div class="bg-dark rounded p-3 mb-2">
+                        <pre
+                            class="text-info mb-0"><code>SELECT * FROM clientes WHERE nombre LIKE 'P%' AND edad > 34;</code></pre>
+                    </div>
+                    <p class="text-muted small italic">Combinación de filtro por patrón de texto y operador relacional
+                        de mayor que
+                        mediante la conjunción <code>AND</code>.</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_nombre_contengaYmayorEdad.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado nombre P y edad mayor a 34">
+                    </div>
+                </section>
+
+                <!-- Consulta 7 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">7 RUT empieza con "1", nombre NO empieza con "M" y
+                        edad menor a 40</h2>
+                    <div class="bg-dark rounded p-3 mb-2">
+                        <pre class="text-info mb-0"><code>SELECT * FROM clientes 
+WHERE rut LIKE '1%' 
+AND nombre NOT LIKE 'M%' 
+AND edad < 40;</code></pre>
+                    </div>
+                    <p class="text-muted small italic">Consulta de triple condición: filtrado por inicio de cadena,
+                        exclusión de
+                        patrón con <code>NOT LIKE</code> y límite de edad inferior a 40.</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_rut_multiAND.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado filtro complejo 4.7">
+                    </div>
+                </section>
+
+                <!-- Consulta 8 -->
+                <section class="mb-5 shadow-sm p-4 rounded bg-white">
+                    <h2 class="h4 text-primary border-bottom pb-2">8 Filtro Avanzado: Múltiples Condiciones</h2>
+                    <div class="bg-dark rounded p-3 mb-2">
+                        <pre class="text-info mb-0"><code>SELECT * FROM clientes 
+WHERE (rut LIKE '13%' OR rut LIKE '%1') 
+AND nombre IN ('Diego', 'Mario', 'Pato', 'Pepa') 
+AND edad BETWEEN 20 AND 80;</code></pre>
+                    </div>
+                    <p class="text-muted small italic">Combinación de operadores lógicos (AND, OR), pertenencia a
+                        conjunto (IN) y
+                        rangos (BETWEEN).</p>
+                    <div class="text-center mt-3">
+                        <img src="img/consulta_rut_multi.png" class="img-fluid rounded shadow-sm border"
+                            alt="Resultado filtro complejo">
+                    </div>
+                </section>
+
+                <!-- Botón de Descarga -->
+                <div class="text-center py-5">
+                    <a href="script_ejercicio_01.sql" download
+                        class="btn btn-outline-success btn-lg px-5 rounded-pill shadow-sm">
+                        <i class="bi bi-file-earmark-code"></i> Descargar Script de Consultas (.sql)
+                    </a>
+                    <p class="text-muted mt-2 small">Incluye creación de tabla, inserción de datos y los 8 filtros
+                        solicitados.</p>
+                </div>
+
+                <!-- Botón de ir al inicio -->
+                <div class="mt-4 text-center border-top pt-3">
+                    <a href="../../index.html" class="btn btn-link text-decoration-none">← Volver al inicio</a>
+                </div>
+            </section>
+
+        </div>
+    </section>
 </body>
+
 </html>
