@@ -1,0 +1,27 @@
+# --- IDE / Editores ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# --- Sistema Operativo ---
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# --- Archivos solicitados por el usuario ---
+*.txt
+*.pdf
+
+# --- Excepciones ---
+# Si quieres mantener algún TXT específico (como licencias), usa:
+# !README.txt
+
+# --- Base de Datos / SQL ---
+# Ignorar logs de pgAdmin o archivos de volcado temporales
+*.log
+*.tmp
+*.bak
