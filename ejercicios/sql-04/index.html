@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 03: Catálogo Netflix</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container py-5">
+        <!-- Header Estilo Netflix -->
+        <div class="card shadow-lg border-0 rounded-4 mb-5" style="background-color: #000000; color: #E50914;">
+            <div class="card-body p-5">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-play-circle-fill me-3" style="font-size: 3rem;"></i>
+                    <h1 class="display-5 fw-bold mb-0">Ejercicio 03: Catálogo Netflix</h1>
+                </div>
+                <p class="lead text-white opacity-75">
+                    Gestión de contenido multimedia mediante inserción masiva y análisis estadístico de temporadas y
+                    años de estreno.
+                </p>
+            </div>
+        </div>
+
+        <!-- Sección de Reportes -->
+        <div class="text-center my-5">
+            <h2 class="fw-bold" style="color: #b9090b;">Reportes de Catálogo y Filtrado</h2>
+            <hr class="w-25 mx-auto border-danger border-2">
+        </div>
+
+        <!-- REGISTRO INICIAL -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-dark">
+                <h4 class="fw-bold text-dark">Inserción de Registros Iniciales</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>INSERT INTO serie_netflix (nombre, temporadas, genero, anio_estreno) VALUES 
+('Black Mirror', 5, 'Ciencia ficción', 2011);</code></pre>
+                </div>
+                <p class="small text-muted">Carga inicial de datos.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/registros.png" class="img-fluid rounded border" alt="Resultado Query 1">
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- QUERY 1 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">1. Insertar nuevos datos</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>INSERT INTO serie_netflix (nombre, temporadas, genero, anio_estreno) VALUES 
+('The Bear', 2, 'Drama', 2022),
+('The Mandalorian', 3, 'Ciencia ficción', 2007),
+('Ted Lasso', 3, 'Comedia', 2020),
+('Severance', 1, 'Ciencia ficción', 2022),
+('The White Lotus', 2, 'Sátira', 2021),
+('Yellowstone', 5, 'Drama', 2008),
+('Euphoria', 2, 'Drama', 2009),
+('Lupin', 3, 'Crimen', 2021),
+('Beef', 7, 'Comedia Drama', 2023);</code></pre>
+                </div>
+                <p class="small text-muted">Insertar datos para poblar el catálogo con diversidad de géneros y años.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query01.png" class="img-fluid rounded border" alt="Resultado Query 1">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 2 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">2. Series con más de 3 temporadas</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT * FROM serie_netflix 
+WHERE temporadas > 3 
+ORDER BY anio_estreno DESC;</code></pre>
+                </div>
+                <p class="small text-muted">Filtrado de contenido extenso ordenado cronológicamente de forma
+                    descendente.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query02.png" class="img-fluid rounded border" alt="Resultado Query 1">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 3 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">3. Identificación de la Serie más Antigua</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT MIN(anio_estreno) AS anio_antiguo 
+FROM serie_netflix;</code></pre>
+                </div>
+                <p class="small text-muted">Uso de la función de agregación <strong>MIN</strong> para localizar el
+                    origen del catálogo.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query03.png" class="img-fluid rounded border" alt="Resultado Query 2">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 4 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">4. Identificación de la Serie más Nueva</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT MAX(anio_estreno) AS anio_new 
+FROM serie_netflix;</code></pre>
+                </div>
+                <p class="small text-muted">Uso de <strong>MAX</strong> para determinar el estreno más reciente en la
+                    base de datos.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query04.png" class="img-fluid rounded border" alt="Resultado Query 3">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 5 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">5. Promedio de Año de Estreno (Redondeado)</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT ROUND(AVG(anio_estreno)) AS anio_promedio 
+FROM serie_netflix;</code></pre>
+                </div>
+                <p class="small text-muted">Cálculo del promedio central de estrenos aplicando redondeo para obtener un
+                    año entero.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query05.png" class="img-fluid rounded border" alt="Resultado Query 4">
+                </div>
+            </div>
+        </div>
+
+
+        <!-- QUERY 6 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">6. Promedio de Temporadas</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT ROUND(AVG(temporadas)) 
+AS temporada_promedio FROM serie_netflix;</code></pre>
+                </div>
+                <p class="small text-muted">Cálculo de la media de duración de las series en el catálogo.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query06.png" class="img-fluid rounded border" alt="Resultado Query 6">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 7 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">7. Series con 1, 2, 4, 5 o 7 temporadas</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT * FROM serie_netflix
+WHERE temporadas IN (1, 2, 4, 5, 7)
+ORDER BY temporadas ASC;</code></pre>
+                </div>
+                <p class="small text-muted">Filtrado por conjunto de valores específicos usando el operador
+                    <strong>IN</strong>.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query07.png" class="img-fluid rounded border" alt="Resultado Query 7">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 8 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">8. Series que NO tienen 1, 2, 4, 5 o 7 temporadas</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT * FROM serie_netflix
+WHERE temporadas NOT IN (1, 2, 4, 5, 7)
+ORDER BY temporadas ASC;</code></pre>
+                </div>
+                <p class="small text-muted">Exclusión de grupos de datos específicos mediante <strong>NOT IN</strong>.
+                </p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query08.png" class="img-fluid rounded border" alt="Resultado Query 8">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 9 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">9. Borrado de Series (Post-2010)</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>DELETE FROM serie_netflix WHERE anio_estreno > 2010;</code></pre>
+                </div>
+                <p class="small text-muted">Ejecución de sentencia <strong>DELETE</strong> con filtro condicional de
+                    año.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query09.png" class="img-fluid rounded border" alt="Resultado Query 9">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 10 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">10. Reinserción de Datos</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>INSERT INTO serie_netflix (nombre, temporadas, genero, anio_estreno) VALUES 
+('Black Mirror', 5, 'Ciencia ficción', 2011),
+('The Bear', 2, 'Drama', 2022),
+('Ted Lasso', 3, 'Comedia', 2020),
+('Severance', 1, 'Ciencia ficción', 2022),
+('The White Lotus', 2, 'Sátira', 2021),
+('Lupin', 3, 'Crimen', 2021),
+('Beef', 7, 'Comedia Drama', 2023);</code></pre>
+                </div>
+                <p class="small text-muted">Restauración de registros tras limpieza de tabla.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query10.png" class="img-fluid rounded border" alt="Resultado Query 10">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 11 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">11. Inserción de Serie Específica (Doctor House)</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>INSERT INTO serie_netflix (nombre, temporadas, genero, anio_estreno) 
+VALUES ('Doctor House', 8, 'Drama Médico', 2004);</code></pre>
+                </div>
+                <p class="small text-muted">Adición de un registro individual al catálogo existente.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query11.png" class="img-fluid rounded border" alt="Resultado Query 11">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 12 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">12. Series Estrenadas entre 2005 y 2020</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT * FROM serie_netflix
+WHERE anio_estreno BETWEEN 2005 AND 2020
+ORDER BY anio_estreno ASC;</code></pre>
+                </div>
+                <p class="small text-muted">Uso del operador de rango <strong>BETWEEN</strong> para segmentación
+                    temporal.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query12.png" class="img-fluid rounded border" alt="Resultado Query 12">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 13 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">13. Filtros por Texto</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT * FROM serie_netflix
+WHERE nombre LIKE 'b%' OR nombre LIKE '%e'</code></pre>
+                </div>
+                <p class="small text-muted">Búsqueda de patrones mediante <strong>LIKE</strong> para nombres que inician
+                    con 'b' o terminan con 'e'.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query13.png" class="img-fluid rounded border" alt="Resultado Query 13">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 14 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h4 class="fw-bold" style="color: #E50914;">14. Proyección: Año de Estreno + Temporadas</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #141414;">
+                    <pre class="mb-0"><code>SELECT nombre, (anio_estreno + temporadas) AS calculo 
+FROM serie_netflix WHERE (anio_estreno + temporadas) > 2010;</code></pre>
+                </div>
+                <p class="small text-muted">Operación aritmética entre columnas para generar una métrica combinada
+                    superior a 2010.</p>
+                <div class="text-center p-3 bg-white rounded shadow-sm">
+                    <img src="img/query14.png" class="img-fluid rounded border" alt="Resultado Query 14">
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Botón de ir al inicio -->
+        <div class="mt-4 text-center border-top pt-3">
+            <a href="../../index.html" class="btn btn-link text-decoration-none">← Volver al inicio</a>
+        </div>
+    </div>
+
+    <footer class="text-white text-center py-4 mt-5" style="background-color: #000000;">
+        <p class="mb-0 small">Netflix Analytics | SQL Módulo 05 | 2026</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+
+</html>
