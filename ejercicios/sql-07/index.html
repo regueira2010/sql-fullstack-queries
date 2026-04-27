@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+
+
+
+
+<body class="bg-light">
+
+    <div class="container py-5">
+        <!-- Header Estilo Inventory -->
+        <div class="card shadow-lg border-0 rounded-4 mb-5" style="background: linear-gradient(135deg, #10b981 0%, #065f46 100%); color: white;">
+            <div class="card-body p-5">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-box-seam-fill me-3" style="font-size: 3rem;"></i>
+                    <h1 class="display-5 fw-bold mb-0">Ejercicio 06: Facturación y Existencias</h1>
+                </div>
+                <p class="lead opacity-75">
+                    Diseño de un ecosistema relacional complejo que integra productos, control de stock y procesos de facturación mediante <strong>SQL DDL y DML</strong>.
+                </p>
+                <div class="mt-4">
+                    <span class="badge rounded-pill bg-white text-success px-3 py-2 me-2">Relational Logic</span>
+                    <span class="badge rounded-pill bg-white text-success px-3 py-2 me-2">Inventory Management</span>
+                    <span class="badge rounded-pill bg-white text-success px-3 py-2">Multi-table Join</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 1: DDL - CREACIÓN DE TABLAS -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h4 class="fw-bold text-dark"><i class="bi bi-table me-2"></i>1. Definición de Estructura (DDL)</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #1f2937;">
+                    <pre class="mb-0"><code>CREATE TABLE productos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255)
+);
+
+CREATE TABLE facturas (
+    id SERIAL PRIMARY KEY,
+    rut_comprador VARCHAR(12) NOT NULL,
+    rut_vendedor VARCHAR(12) NOT NULL
+);
+
+CREATE TABLE detalle_facturas (
+    id SERIAL PRIMARY KEY,
+    id_producto INTEGER,
+    id_factura INTEGER,
+    CONSTRAINT fk_producto FOREIGN KEY (id_producto) REFERENCES productos(id),
+    CONSTRAINT fk_factura FOREIGN KEY (id_factura) REFERENCES facturas(id)
+);
+
+CREATE TABLE existencias (
+    id SERIAL PRIMARY KEY,
+    id_producto INTEGER,
+    cantidad INTEGER NOT NULL,
+    precio INTEGER NOT NULL,
+    pesokg INTEGER,
+    CONSTRAINT fk_prod_existencia FOREIGN KEY (id_producto) REFERENCES productos(id)
+);</code></pre>
+                </div>
+                <p class="small text-muted">Definición de claves primarias (SERIAL) y foráneas para garantizar la integridad referencial entre el catálogo y las ventas.</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: DML - INSERCIÓN DE DATOS -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h4 class="fw-bold text-dark"><i class="bi bi-database-fill-add me-2"></i>2. Insertar Datos (DML)</h4>
+                <div class="p-3 rounded-3 mb-3 text-white" style="background-color: #1f2937;">
+                    <pre class="mb-0"><code>-- Insertar 10 Productos
+INSERT INTO productos (nombre, descripcion) VALUES 
+('Laptop Pro', '16GB RAM, 512GB SSD'), ('Monitor 4K', '27 pulgadas HDR'),
+('Teclado Mecánico', 'RGB Switch Red'), ('Mouse Gamer', '12000 DPI'),
+('Disco Externo', '2TB USB-C'), ('Auriculares BT', 'Noise Cancelling'),
+('Webcam HD', '1080p 60fps'), ('Escritorio L', 'Madera Roble'),
+('Silla Ergonómica', 'Ajuste Lumbar'), ('Hub USB-C', '7 en 1');
+
+-- Insertar Existencias
+INSERT INTO existencias (id_producto, cantidad, precio, pesokg) VALUES 
+(1, 5, 1200, 2), (2, 8, 350, 5), (3, 15, 80, 1), (4, 20, 50, 1),
+(5, 10, 100, 1), (6, 12, 150, 1), (7, 7, 90, 1), (8, 3, 250, 15),
+(9, 6, 300, 12), (10, 25, 40, 1);
+
+-- Insertar 5 Facturas y Detalles
+INSERT INTO facturas (rut_comprador, rut_vendedor) VALUES 
+('11.111.111-1', '99.999.999-K'), ('22.222.222-2', '99.999.999-K'),
+('33.333.333-3', '99.999.999-K'), ('44.444.444-4', '99.999.999-K'),
+('55.555.555-5', '99.999.999-K');
+
+INSERT INTO detalle_facturas (id_factura, id_producto) VALUES 
+(1,1), (1,2), (1,3), (2,4), (2,5), (2,6), (2,7),
+(3,8), (3,9), (3,10), (4,1), (4,5), (4,9), (4,10), (5,2), (5,4), (5,6);</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- GALERÍA DE TABLAS -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0 text-center p-2">
+                    <p class="small fw-bold text-success mb-1">Productos</p>
+                    <img src="img/productos.png" class="img-fluid rounded border" alt="Tabla Productos">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0 text-center p-2">
+                    <p class="small fw-bold text-success mb-1">Existencias</p>
+                    <img src="img/existencias.png" class="img-fluid rounded border" alt="Tabla Existencias">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0 text-center p-2">
+                    <p class="small fw-bold text-success mb-1">Facturas</p>
+                    <img src="img/facturas.png" class="img-fluid rounded border" alt="Tabla Facturas">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 shadow-sm border-0 text-center p-2">
+                    <p class="small fw-bold text-success mb-1">Detalles</p>
+                    <img src="img/detalle.png" class="img-fluid rounded border" alt="Tabla Detalle Facturas">
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center my-5">
+            <h2 class="fw-bold text-success">Reportes y Operaciones</h2>
+            <hr class="w-25 mx-auto border-success border-2">
+        </div>
+
+        <!-- QUERY 01 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h5 class="fw-bold text-success">1. Actualización de Inventario Masivo</h5>
+                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                    <pre class="mb-0"><code>UPDATE existencias SET cantidad = 10;</code></pre>
+                </div>
+                <p class="small text-muted">Estandarización de stock para todos los productos en existencia[cite: 2].</p>
+                <div class="text-center p-3 bg-white rounded border">
+                    <img src="img/query01.png" class="img-fluid rounded shadow-sm" alt="Update Existencias">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 02 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h5 class="fw-bold text-success">2. Agregar campo fecha a tabla factura</h5>
+                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                    <pre class="mb-0"><code>ALTER TABLE facturas ADD COLUMN fecha DATE;</code></pre>
+                </div>
+                <p class="small text-muted"><strong>ALTER TABLE</strong> para agregar campo fecha a la tabla.</p>
+                <div class="row g-2">
+                    <div class="col-12">
+                        <div class="text-center p-3 bg-white rounded border">
+                            <img src="img/query02.png" class="img-fluid rounded shadow-sm" alt="Alter Table Fecha">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!-- QUERY 03 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h5 class="fw-bold text-success">2 & 3. Evolución de Esquema: Campo Fecha</h5>
+                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                    <pre class="mb-0"><code>UPDATE facturas SET fecha = '2024-01-01' WHERE id = 1;
+UPDATE facturas SET fecha = '2024-01-05' WHERE id = 2;
+UPDATE facturas SET fecha = '2024-01-10' WHERE id = 3;
+UPDATE facturas SET fecha = '2024-01-15' WHERE id = 4;
+UPDATE facturas SET fecha = '2024-01-20' WHERE id = 5;</code></pre>
+                </div>
+                <p class="small text-muted">Mediante <strong>UPDATE</strong> se actualizaron los registros de los campos fecha.</p>
+                <div class="row g-2">
+                    <div class="col-12 mt-2 text-center p-3 bg-white rounded border">
+                         <img src="img/query03.png" class="img-fluid rounded shadow-sm" alt="Update Fechas">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- QUERY 04 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h5 class="fw-bold text-success">4. Eliminación de Columna de Peso</h5>
+                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                    <pre class="mb-0"><code>ALTER TABLE existencias DROP COLUMN pesokg;</code></pre>
+                </div>
+                <p class="small text-muted">Eliminando el campo <code>pesokg</code> de la tabla existencia.</p>
+                <div class="text-center p-3 bg-white rounded border">
+                    <img src="img/query04.png" class="img-fluid rounded shadow-sm" alt="Drop Column">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 05 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h5 class="fw-bold text-success">5. Consulta de Factura con detalle, producto y precio.</h5>
+                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                    <pre class="mb-0"><code>SELECT f.id AS factura_nro, p.nombre, e.precio
+FROM facturas f
+JOIN detalle_facturas df ON f.id = df.id_factura
+JOIN productos p ON df.id_producto = p.id
+JOIN existencias e ON p.id = e.id_producto
+WHERE f.id = 2;</code></pre>
+                </div>
+                <p class="small text-muted">Cruce de 4 tablas para obtener una vista detallada de productos y precios por factura.</p>
+                <div class="text-center p-3 bg-white rounded border">
+                    <img src="img/query05.png" class="img-fluid rounded shadow-sm" alt="Join Factura Detalle">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 06 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-success">
+                <h5 class="fw-bold text-success">6. Valor Final de una factura</h5>
+                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                    <pre class="mb-0"><code>SELECT f.id AS factura_nro, SUM(e.precio) AS total_factura
+FROM facturas f
+JOIN detalle_facturas df ON f.id = df.id_factura
+JOIN productos p ON df.id_producto = p.id
+JOIN existencias e ON p.id = e.id_producto
+WHERE f.id = 2 GROUP BY f.id;</code></pre>
+                </div>
+                <p class="small text-muted">Cálculo del total acumulado mediante funciones de agregación <strong>SUM</strong> de una factura.</p>
+                <div class="text-center p-3 bg-white rounded border">
+                    <img src="img/query06.png" class="img-fluid rounded shadow-sm" alt="Total Factura">
+                </div>
+            </div>
+        </div>
+
+        <!-- QUERY 07 -->
+        <div class="card shadow-sm border-0 rounded-4 mb-5">
+            <div class="card-body p-4 border-start border-4 border-danger">
+                <h5 class="fw-bold text-danger">7. Eliminación Completa de Productos</h5>
+                <div class="p-3 rounded-3 mb-3 bg-dark text-warning">
+                    <pre class="mb-0"><code>DELETE FROM detalle_facturas;
+DELETE FROM existencias;
+DELETE FROM productos;</code></pre>
+                </div>
+                <p class="small text-muted">Eliminación en cascada manual de registros para resetear el catálogo de productos.</p>
+                
+                <div class="row g-2 mt-2">
+                    <div class="col-md-4">
+                        <img src="img/query07-1.png" class="img-fluid rounded border shadow-sm" alt="Delete Detalle">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="img/query07-2.png" class="img-fluid rounded border shadow-sm" alt="Delete Existencias">
+                    </div>
+                    <div class="col-md-4">
+                        <img src="img/query07-3.png" class="img-fluid rounded border shadow-sm" alt="Delete Productos">
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Resumen Técnico y Descarga -->
+        <div class="card border-0 shadow-lg rounded-4 mb-5 overflow-hidden">
+            <div class="card-header py-3 text-white text-center" style="background-color: #065f46;">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-file-earmark-check me-2"></i>Finalización de Auditoría de Inventario</h5>
+            </div>
+            <div class="card-body p-4 text-center">
+                <div class="row g-4 mb-4 text-start">
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 bg-light border-start border-4 border-success h-100">
+                            <p class="small fw-bold text-success mb-1">Métricas de Estructura</p>
+                            <ul class="list-unstyled small mb-0">
+                                <li><i class="bi bi-check2-circle me-2"></i>4 Tablas Relacionadas</li>
+                                <li><i class="bi bi-check2-circle me-2"></i>3 Restricciones Foreign Key</li>
+                                <li><i class="bi bi-check2-circle me-2"></i>Integridad DDL Verificada</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 rounded-3 bg-light border-start border-4 border-success h-100">
+                            <p class="small fw-bold text-success mb-1">Operaciones DML</p>
+                            <ul class="list-unstyled small mb-0">
+                                <li><i class="bi bi-check2-circle me-2"></i>10 Productos & 15 Facturas</li>
+                                <li><i class="bi bi-check2-circle me-2"></i>Cálculos Agregados (SUM)</li>
+                                <li><i class="bi bi-check2-circle me-2"></i>Limpieza y Purga de Datos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón de Descarga Principal -->
+                <div class="py-3">
+                    <a href="actividad7.sql" download class="btn btn-lg px-5 py-3 rounded-pill text-white shadow-sm fw-bold transition-all" style="background-color: #10b981; border: none;">
+                        <i class="bi bi-file-earmark-arrow-down-fill me-2"></i> Descargar Script actividad7.sql
+                    </a>
+                    <p class="text-muted mt-3 small">
+                        <i class="bi bi-info-circle me-1"></i> 
+                        Incluye sentencias <code>ALTER TABLE</code> y <code>JOIN</code> de múltiples niveles.
+                    </p>
+                </div>
+
+                <!-- Botón de retorno -->
+                <div class="mt-4 pt-3 border-top">
+                    <a href="../../index.html" class="btn btn-link text-decoration-none fw-bold" style="color: #065f46;">
+                        <i class="bi bi-chevron-double-left me-1"></i> Volver al Catálogo de Proyectos
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Botón de ir al inicio -->
+        <div class="mt-5 text-center border-top pt-4">
+            <a href="../../index.html" class="btn btn-outline-success fw-bold px-4 rounded-pill">
+                <i class="bi bi-arrow-left-circle-fill me-2"></i> Volver al Dashboard Principal
+            </a>
+        </div>
+    </div>
+
+    <footer class="text-white text-center py-4 mt-5" style="background-color: #065f46;">
+        <p class="mb-0 small">Logística SQL | Ejercicio 06 | 2026</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
