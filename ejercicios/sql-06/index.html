@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 05: Sistema Bancario SQL</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>SQL-05</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body class="bg-light">
 
     <div class="container py-5">
         <!-- Header Estilo Fintech -->
-        <div class="card shadow-lg border-0 rounded-4 mb-5" style="background: linear-gradient(135deg, #0d6efd 0%, #003d99 100%); color: white;">
+        <div class="card shadow-lg border-0 rounded-4 mb-5"
+            style="background: linear-gradient(135deg, #0d6efd 0%, #003d99 100%); color: white;">
             <div class="card-body p-5">
                 <div class="d-flex align-items-center mb-3">
                     <i class="bi bi-shield-check me-3" style="font-size: 3rem;"></i>
                     <h1 class="display-5 fw-bold mb-0">Ejercicio 05: Integridad y Agregaciones</h1>
                 </div>
                 <p class="lead opacity-75">
-                    Implementación de un modelo relacional <strong>Clientes-Cuentas</strong> con llaves foráneas, 
+                    Implementación de un modelo relacional <strong>Clientes-Cuentas</strong> con llaves foráneas,
                     restricciones de control (CHECK) y lógica de integridad referencial <code>ON DELETE CASCADE</code>.
                 </p>
                 <div class="mt-4">
@@ -29,7 +33,7 @@
             </div>
         </div>
 
-        <!-- Sección 1: Estructura DDL -->
+        <!-- Estructura DDL -->
         <div class="text-center my-5">
             <h2 class="fw-bold text-primary">Estructura y Definición de Datos</h2>
             <hr class="w-25 mx-auto border-primary border-2">
@@ -56,11 +60,12 @@ CREATE TABLE Cuentas (
     ON UPDATE CASCADE
 );</code></pre>
                 </div>
-                <p class="small text-muted">Se asegura la integridad mediante <strong>Llaves Primarias</strong> y una <strong>Llave Foránea</strong> con efecto cascada.</p>
+                <p class="small text-muted">Se asegura la integridad mediante <strong>Llaves Primarias</strong> y una
+                    <strong>Llave Foránea</strong> con efecto cascada.</p>
             </div>
         </div>
 
-<!-- Inserción de Datos (DML) -->
+        <!-- Inserción de Datos (DML) -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4 border-start border-4 border-primary">
                 <h4 class="fw-bold text-dark">Carga de Datos Iniciales (DML)</h4>
@@ -81,11 +86,11 @@ INSERT INTO Cuentas (id_cuenta, id_cliente, saldo) VALUES
 (501, 5, 50.00), (502, 5, 120.00), (503, 5, 900.00);</code></pre>
                 </div>
                 <p class="small text-muted">
-                    Poblamiento de tablas respetando las restricciones de <strong>CHECK</strong>: 
-                    Edades (18-85) y Saldos (-5,000 a 100,000)[cite: 3].
+                    Inserción de datos en tablas respetando las restricciones de <strong>CHECK</strong>:
+                    Edades (18-85) y Saldos (-5,000 a 100,000).
                 </p>
-                
-            <div class="row g-3 mt-3">
+
+                <div class="row g-3 mt-3">
                     <div class="col-md-6">
                         <div class="p-3 bg-white rounded border h-100">
                             <p class="small fw-bold text-center text-primary">Tabla: Clientes</p>
@@ -99,127 +104,137 @@ INSERT INTO Cuentas (id_cuenta, id_cliente, saldo) VALUES
                         </div>
                     </div>
                 </div>
-        </div>
+            </div>
 
 
-        <!-- Sección 2: Consultas de Negocio y Agregaciones -->
-        <div class="text-center my-5">
-            <h2 class="fw-bold text-primary">Análisis de Cuentas y Saldos</h2>
-            <hr class="w-25 mx-auto border-primary border-2">
-        </div>
+            <!-- Consultas de Negocio y Agregaciones -->
+            <div class="text-center my-5">
+                <h2 class="fw-bold text-primary">Análisis de Cuentas y Saldos</h2>
+                <hr class="w-25 mx-auto border-primary border-2">
+            </div>
 
-        <!-- QUERY 01 -->
-        <div class="card shadow-sm border-0 rounded-4 mb-4">
-            <div class="card-body p-4 border-start border-4 border-primary">
-                <h5 class="fw-bold text-primary">1. Saldo de cada cuenta del cliente de mayor edad</h5>
-                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
-                    <pre class="mb-0"><code>SELECT cta.id_cuenta, cta.saldo
+            <!-- QUERY 01 -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4 border-start border-4 border-primary">
+                    <h5 class="fw-bold text-primary">1. Saldo de cada cuenta del cliente de mayor edad</h5>
+                    <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                        <pre class="mb-0"><code>SELECT cta.id_cuenta, cta.saldo
 FROM Cuentas cta
 JOIN Clientes cli ON cta.id_cliente = cli.id_cliente
 WHERE cli.edad = (SELECT MAX(edad) FROM Clientes);</code></pre>
-                </div>
-                <p class="small text-muted">Identificación del patrimonio del cliente con mayor edad (Carlos Ruiz, 80 años).</p>
-                <div class="text-center p-3 bg-white rounded border">
-                    <img src="img/query01.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 1">
+                    </div>
+                    <p class="small text-muted">Identificación del patrimonio del cliente con mayor edad (Carlos Ruiz,
+                        80 años).</p>
+                    <div class="text-center p-3 bg-white rounded border">
+                        <img src="img/query01.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 1">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- QUERY 02 -->
-        <div class="card shadow-sm border-0 rounded-4 mb-4">
-            <div class="card-body p-4 border-start border-4 border-primary">
-                <h5 class="fw-bold text-primary">2. Promedio de edad de clientes con saldo negativo</h5>
-                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
-                    <pre class="mb-0"><code>SELECT ROUND(AVG(cli.edad)) AS promedio_edad_deudores
+            <!-- QUERY 02 -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4 border-start border-4 border-primary">
+                    <h5 class="fw-bold text-primary">2. Promedio de edad de clientes con saldo negativo</h5>
+                    <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                        <pre class="mb-0"><code>SELECT ROUND(AVG(cli.edad)) AS promedio_edad_deudores
 FROM Clientes cli
 JOIN Cuentas cta ON cli.id_cliente = cta.id_cliente
 WHERE cta.saldo < 0;</code></pre>
-                </div>
-                <p class="small text-muted">Cálculo del perfil demográfico de clientes con obligaciones pendientes.</p>
-                <div class="text-center p-3 bg-white rounded border">
-                    <img src="img/query02.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 2">
+                    </div>
+                    <p class="small text-muted">Cálculo del perfil demográfico de clientes con obligaciones pendientes.
+                    </p>
+                    <div class="text-center p-3 bg-white rounded border">
+                        <img src="img/query02.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 2">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- QUERY 03 -->
-        <div class="card shadow-sm border-0 rounded-4 mb-4">
-            <div class="card-body p-4 border-start border-4 border-primary">
-                <h5 class="fw-bold text-primary">3. Nombre y cantidad de cuentas (Más de una)</h5>
-                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
-                    <pre class="mb-0"><code>SELECT c.nombre, COUNT(cu.id_cuenta) AS total_cuentas
+            <!-- QUERY 03 -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4 border-start border-4 border-primary">
+                    <h5 class="fw-bold text-primary">3. Nombre y cantidad de cuentas (Más de una)</h5>
+                    <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                        <pre class="mb-0"><code>SELECT c.nombre, COUNT(cu.id_cuenta) AS total_cuentas
 FROM Clientes c JOIN Cuentas cu ON c.id_cliente = cu.id_cliente
 GROUP BY c.nombre HAVING COUNT(cu.id_cuenta) > 1;</code></pre>
-                </div>
-                <p class="small text-muted">Uso de <strong>GROUP BY</strong> y <strong>HAVING</strong> para identificar clientes multicuenta.</p>
-                <div class="text-center p-3 bg-white rounded border">
-                    <img src="img/query03.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 3">
+                    </div>
+                    <p class="small text-muted">Uso de <strong>GROUP BY</strong> y <strong>HAVING</strong> para
+                        identificar clientes multicuenta.</p>
+                    <div class="text-center p-3 bg-white rounded border">
+                        <img src="img/query03.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 3">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- QUERY 04 -->
-        <div class="card shadow-sm border-0 rounded-4 mb-4">
-            <div class="card-body p-4 border-start border-4 border-primary">
-                <h5 class="fw-bold text-primary">4. Suma de saldos por cliente (Más de una cuenta)</h5>
-                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
-                    <pre class="mb-0"><code>SELECT c.nombre, SUM(cu.saldo) AS saldo_total
+            <!-- QUERY 04 -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4 border-start border-4 border-primary">
+                    <h5 class="fw-bold text-primary">4. Suma de saldos por cliente (Más de una cuenta)</h5>
+                    <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                        <pre class="mb-0"><code>SELECT c.nombre, SUM(cu.saldo) AS saldo_total
 FROM Clientes c JOIN Cuentas cu ON c.id_cliente = cu.id_cliente
 GROUP BY c.nombre HAVING COUNT(cu.id_cuenta) > 1;</code></pre>
-                </div>
-                <p class="small text-muted">Consolidación de activos por usuario con múltiples productos financieros.</p>
-                <div class="text-center p-3 bg-white rounded border">
-                    <img src="img/query04.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 4">
+                    </div>
+                    <p class="small text-muted">Consolidación de activos por usuario con múltiples productos
+                        financieros.</p>
+                    <div class="text-center p-3 bg-white rounded border">
+                        <img src="img/query04.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 4">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- QUERY 05 -->
-        <div class="card shadow-sm border-0 rounded-4 mb-4">
-            <div class="card-body p-4 border-start border-4 border-primary">
-                <h5 class="fw-bold text-primary">5. Saldo combinado de clientes con al menos una cuenta negativa</h5>
-                <div class="p-3 rounded-3 mb-3 bg-dark text-info">
-                    <pre class="mb-0"><code>SELECT c.nombre, SUM(cu.saldo) AS saldo_combined
+            <!-- QUERY 05 -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4 border-start border-4 border-primary">
+                    <h5 class="fw-bold text-primary">5. Saldo combinado de clientes con al menos una cuenta negativa
+                    </h5>
+                    <div class="p-3 rounded-3 mb-3 bg-dark text-info">
+                        <pre class="mb-0"><code>SELECT c.nombre, SUM(cu.saldo) AS saldo_combined
 FROM Clientes c JOIN Cuentas cu ON c.id_cliente = cu.id_cliente
 WHERE c.id_cliente IN (SELECT id_cliente FROM Cuentas WHERE saldo < 0)
 GROUP BY c.nombre;</code></pre>
+                    </div>
+                    <p class="small text-muted">Filtrado mediante subconsultas para identificar el saldo neto de
+                        deudores.</p>
+                    <div class="text-center p-3 bg-white rounded border">
+                        <img src="img/query05.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 5">
+                    </div>
                 </div>
-                <p class="small text-muted">Filtrado mediante subconsultas para identificar el saldo neto de deudores.</p>
-                <div class="text-center p-3 bg-white rounded border">
-                    <img src="img/query05.png" class="img-fluid rounded shadow-sm" alt="Resultado Query 5">
+            </div>
+
+
+            <!-- Resumen y Descarga -->
+            <div class="card border-0 shadow-lg rounded-4 mb-5 overflow-hidden">
+                <div class="card-header py-3 bg-primary text-white text-center">
+                    <h5 class="mb-0 fw-bold">Finalización del Módulo Relacional</h5>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <p class="text-muted mb-4">Este ejercicio demuestra el control total sobre las relaciones entre
+                        entidades y la capacidad de extraer métricas financieras precisas.</p>
+
+                    <div class="mb-4">
+                        <a href="actividad6.sql" download class="btn btn-primary btn-lg px-5 rounded-pill shadow">
+                            <i class="bi bi-download me-2"></i> Descargar Script actividad6.sql
+                        </a>
+                    </div>
+
+                    <!-- Botón de ir al inicio -->
+                    <div class="mt-4 text-center border-top pt-3">
+                        <a href="../../index.html" class="btn btn-link text-decoration-none text-primary fw-bold">
+                            <i class="bi bi-arrow-left-circle-fill me-1"></i> Volver al Inicio
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        
-        <!-- Resumen y Descarga -->
-        <div class="card border-0 shadow-lg rounded-4 mb-5 overflow-hidden">
-            <div class="card-header py-3 bg-primary text-white text-center">
-                <h5 class="mb-0 fw-bold">Finalización del Módulo Relacional</h5>
-            </div>
-            <div class="card-body p-4 text-center">
-                <p class="text-muted mb-4">Este ejercicio demuestra el control total sobre las relaciones entre entidades y la capacidad de extraer métricas financieras precisas.</p>
-                
-                <div class="mb-4">
-                    <a href="actividad6.sql" download class="btn btn-primary btn-lg px-5 rounded-pill shadow">
-                        <i class="bi bi-download me-2"></i> Descargar Script actividad6.sql
-                    </a>
-                </div>
+        <footer class="text-center py-4 bg-dark text-white-50">
+            <p class="mb-0 small">Fintech Analytics | Módulo 05 | 2026</p>
+        </footer>
 
-                <!-- Botón de ir al inicio -->
-                <div class="mt-4 text-center border-top pt-3">
-                    <a href="../../index.html" class="btn btn-link text-decoration-none text-primary fw-bold">
-                        <i class="bi bi-arrow-left-circle-fill me-1"></i> Volver al Inicio
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer class="text-center py-4 bg-dark text-white-50">
-        <p class="mb-0 small">Fintech Analytics | Módulo 05 | 2026</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
 </body>
+
 </html>

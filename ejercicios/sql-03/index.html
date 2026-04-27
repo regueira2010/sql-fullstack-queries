@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQL-02: Gestión de Finanzas Personales</title>
+    <title>SQL-02</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body class="bg-light">
@@ -32,7 +33,7 @@
             </div>
         </div>
 
-        <!-- Paso 1: Estructura de Datos -->
+        <!-- Estructura de Datos -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4 border-start border-4 border-success">
                 <h3 class="fw-bold" style="color: #2e7d32;">Paso 1: Control de Registros</h3>
@@ -60,7 +61,7 @@
             <hr class="w-25 mx-auto border-success border-2">
         </div>
 
-        <!-- QUERY 1: Máximo Acreedor -->
+        <!-- QUERY 1 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4">
                 <h4 class="fw-bold" style="color: #2e7d32;">1. Máximo Acreedor</h4>
@@ -68,13 +69,14 @@
                     <pre class="mb-0"><code>SELECT nombre, le_debo FROM finanzas_personales 
 ORDER BY le_debo DESC LIMIT 1;</code></pre>
                 </div>
-                <p class="small text-muted">Identificación de la entidad o persona a la que se le adeuda la mayor cantidad de capital.</p>
+                <p class="small text-muted">Identificación de la entidad o persona a la que se le adeuda la mayor
+                    cantidad de capital.</p>
                 <div class="text-center p-3 bg-light rounded"><img src="img/debeMas01.png"
                         class="img-fluid rounded border shadow-sm" alt="Resultado Query 1"></div>
             </div>
         </div>
 
-        <!-- QUERY 2: Máximo Deudor -->
+        <!-- QUERY 2 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4 border-start border-4 border-success">
                 <h4 class="fw-bold" style="color: #2e7d32;">2. Máximo Deudor</h4>
@@ -88,7 +90,7 @@ ORDER BY me_debe DESC LIMIT 1;</code></pre>
             </div>
         </div>
 
-        <!-- QUERY 3: Total Deuda -->
+        <!-- QUERY 3 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4">
                 <h4 class="fw-bold" style="color: #2e7d32;">3. Deuda Total</h4>
@@ -101,7 +103,7 @@ ORDER BY me_debe DESC LIMIT 1;</code></pre>
             </div>
         </div>
 
-        <!-- QUERY 4: Promedio de Deuda -->
+        <!-- QUERY 4 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4">
                 <h4 class="fw-bold" style="color: #2e7d32;">4. Deuda Promedio</h4>
@@ -109,13 +111,14 @@ ORDER BY me_debe DESC LIMIT 1;</code></pre>
                     <pre class="mb-0"><code>SELECT AVG(le_debo) AS promedio_deuda 
 FROM finanzas_personales WHERE le_debo > 0;</code></pre>
                 </div>
-                <p class="small text-muted">Cálculo del promedio de deuda utilizando <code>AVG()</code>, filtrando registros sin deuda activa.</p>
+                <p class="small text-muted">Cálculo del promedio de deuda utilizando <code>AVG()</code>, filtrando
+                    registros sin deuda activa.</p>
                 <div class="text-center p-3 bg-light rounded"><img src="img/promedioDeuda04.png"
                         class="img-fluid rounded border shadow-sm" alt="Resultado Query 4"></div>
             </div>
         </div>
 
-        <!-- QUERY 5: Proyección Experta -->
+        <!-- QUERY 5 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4 border-start border-4 border-success">
                 <h4 class="fw-bold" style="color: #2e7d32;">5. Proyección de Tiempo (Años/Meses)</h4>
@@ -125,13 +128,14 @@ FROM finanzas_personales WHERE le_debo > 0;</code></pre>
        SUM(cuotas_pagar) % 12 AS meses
 FROM finanzas_personales;</code></pre>
                 </div>
-                <p class="small text-muted">Desglose del tiempo total de pago mediante división entera y operador módulo.</p>
+                <p class="small text-muted">Desglose del tiempo total de pago mediante división entera y operador
+                    módulo.</p>
                 <div class="text-center p-3 bg-light rounded"><img src="img/totalCuotas05.png"
                         class="img-fluid rounded border shadow-sm" alt="Resultado Query 5"></div>
             </div>
         </div>
 
-        <!-- QUERY 6: Valor Cuota Reducida -->
+        <!-- QUERY 6 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4">
                 <h4 class="fw-bold" style="color: #2e7d32;">6. Valor de Cuota tras Cobro Total</h4>
@@ -139,13 +143,14 @@ FROM finanzas_personales;</code></pre>
                     <pre class="mb-0"><code>SELECT (SUM(le_debo) - SUM(me_debe))/ SUM(cuotas_pagar) AS Valor_Cuota 
 FROM finanzas_personales;</code></pre>
                 </div>
-                <p class="small text-muted">Cálculo aritmético para determinar la mensualidad si se aplicaran todos los cobros a la deuda.</p>
+                <p class="small text-muted">Cálculo aritmético para determinar la mensualidad si se aplicaran todos los
+                    cobros a la deuda.</p>
                 <div class="text-center p-3 bg-light rounded"><img src="img/valorCuota06.png"
                         class="img-fluid rounded border shadow-sm" alt="Resultado Query 6"></div>
             </div>
         </div>
 
-        <!-- QUERY 7: Inserción de Deuda Crítica -->
+        <!-- QUERY 7 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4 border-start border-4 border-danger">
                 <h4 class="fw-bold" style="color: #dc3545;">7. Registro de Compromiso Inesperado</h4>
@@ -153,14 +158,15 @@ FROM finanzas_personales;</code></pre>
                     <pre class="mb-0"><code>INSERT INTO finanzas_personales (nombre, me_debe, cuotas_cobrar, le_debo, cuotas_pagar)
 VALUES ('pareja', 0, 0, 50000, 1);</code></pre>
                 </div>
-                <p class="small text-muted">Uso de <code>INSERT INTO</code> para actualizar la realidad financiera tras un nuevo compromiso.</p>
+                <p class="small text-muted">Uso de <code>INSERT INTO</code> para actualizar la realidad financiera tras
+                    un nuevo compromiso.</p>
                 <div class="text-center p-3 bg-light rounded"><img src="img/insertarRegistro07.png"
                         class="img-fluid rounded border shadow-sm" alt="Resultado Query 7"></div>
 
             </div>
         </div>
 
-        <!-- QUERY 8: Cuota del Mes -->
+        <!-- QUERY 8 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4">
                 <h4 class="fw-bold" style="color: #2e7d32;">8. Gasto Operativo Mensual (Actual)</h4>
@@ -174,7 +180,7 @@ FROM finanzas_personales WHERE cuotas_pagar > 0;</code></pre>
             </div>
         </div>
 
-        <!-- QUERY 9: Refinanciamiento -->
+        <!-- QUERY 9 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4">
                 <h4 class="fw-bold" style="color: #2e7d32;">9. Actualización de Cuotas (Refinanciamiento)</h4>
@@ -183,14 +189,15 @@ FROM finanzas_personales WHERE cuotas_pagar > 0;</code></pre>
 SET cuotas_pagar = 13 
 WHERE nombre = 'almacén esquina';</code></pre>
                 </div>
-                <p class="small text-muted">Modificación de registros existentes mediante <code>UPDATE</code> para ajustar plazos de pago.</p>
+                <p class="small text-muted">Modificación de registros existentes mediante <code>UPDATE</code> para
+                    ajustar plazos de pago.</p>
                 <div class="text-center p-3 bg-light rounded"><img src="img/actualizacionReg09.png"
                         class="img-fluid rounded border shadow-sm" alt="Resultado Query 9"></div>
 
             </div>
         </div>
 
-        <!-- QUERY 10: Cuota Final -->
+        <!-- QUERY 10 -->
         <div class="card shadow-sm border-0 rounded-4 mb-4">
             <div class="card-body p-4 border-start border-4 border-success">
                 <h4 class="fw-bold" style="color: #2e7d32;">10. Recálculo Final de Cuota</h4>
@@ -198,13 +205,14 @@ WHERE nombre = 'almacén esquina';</code></pre>
                     <pre class="mb-0"><code>SELECT SUM(le_debo / cuotas_pagar) AS cuota_final 
 FROM finanzas_personales WHERE cuotas_pagar > 0;</code></pre>
                 </div>
-                <p class="small text-muted">Resultado final de la carga mensual tras todas las actualizaciones de datos.</p>
+                <p class="small text-muted">Resultado final de la carga mensual tras todas las actualizaciones de datos.
+                </p>
                 <div class="text-center p-3 bg-light rounded"><img src="img/cuota_final10.png"
                         class="img-fluid rounded border shadow-sm" alt="Resultado Query 10"></div>
             </div>
         </div>
 
-        <!-- Resumen de Resultados (Estilo Imagen de Referencia) -->
+        <!-- Resumen de Resultados -->
         <div class="card border-0 shadow-lg rounded-4 mb-5 overflow-hidden">
             <div class="card-header py-3 text-white d-flex align-items-center" style="background-color: #1a4731;">
                 <i class="bi bi-calculator me-2"></i>
@@ -213,7 +221,8 @@ FROM finanzas_personales WHERE cuotas_pagar > 0;</code></pre>
             <div class="card-body p-4">
                 <div class="p-3 rounded-3 mb-4" style="background-color: #e8f5e9; border: 1px solid #c8e6c9;">
                     <p class="mb-1 fw-bold text-success">Objetivo del Análisis:</p>
-                    <p class="small text-dark mb-0">Determinar la viabilidad financiera mediante el cálculo de cuotas acordadas y la reducción de deuda tras cobros ejecutados.</p>
+                    <p class="small text-dark mb-0">Determinar la viabilidad financiera mediante el cálculo de cuotas
+                        acordadas y la reducción de deuda tras cobros ejecutados.</p>
                 </div>
 
                 <div class="row g-3 text-center mb-4">
@@ -243,10 +252,14 @@ FROM finanzas_personales WHERE cuotas_pagar > 0;</code></pre>
                         <i class="bi bi-cloud-arrow-down-fill me-2"></i> Descargar Script de Finanzas (.sql)
                     </a>
                 </div>
-            </div>
-            <!-- Botón de ir al inicio -->
-            <div class="mt-4 text-center border-top pt-3">
-                <a href="../../index.html" class="btn btn-link text-decoration-none">← Volver al inicio</a>
+
+                <!-- Botón de ir al inicio -->
+                <div class="mt-4 text-center border-top pt-3">
+                    <a href="../../index.html" class="btn btn-link text-decoration-none fw-bold" style="color: #1a4731"
+                        ;>
+                        <i class="bi bi-arrow-left-circle-fill me-1"></i> Volver al Inicio
+                    </a>
+                </div>
             </div>
         </div>
     </div>

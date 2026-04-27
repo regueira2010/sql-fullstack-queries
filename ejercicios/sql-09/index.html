@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL-08</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container py-5">
+        <div class="card shadow-lg border-0 rounded-4 mb-5"
+            style="background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%); color: white;">
+            <div class="card-body p-5">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-database-fill-gear me-3" style="font-size: 3rem;"></i>
+                    <h1 class="display-5 fw-bold mb-0">Ejercicio 08: Modelado ER y Normalización</h1>
+                </div>
+                <p class="lead opacity-75">
+                    Diseño y normalización de bases de datos para tres ecosistemas: <strong>Envíos, Retail y
+                        Banca</strong>, implementados en PostgreSQL.
+                </p>
+                <div class="mt-4">
+                    <span class="badge rounded-pill bg-white text-primary px-3 py-2 me-2">Entity-Relationship</span>
+                    <span class="badge rounded-pill bg-white text-primary px-3 py-2 me-2">3rd Normal Form</span>
+                    <span class="badge rounded-pill bg-white text-primary px-3 py-2">SQL DDL</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SISTEMA DE ENVÍOS -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-primary">
+                <h4 class="fw-bold text-dark mb-4"><i class="bi bi-truck me-2 text-primary"></i>1. Sistema de Envío de
+                    Encomiendas</h4>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <p class="small fw-bold text-primary mb-2">Modelo Entidad-Relación (DER)</p>
+                        <div class="text-center p-3 bg-white rounded border h-100 d-flex align-items-center">
+                            <img src="img/DER_Encomienda.png" class="img-fluid rounded shadow-sm" alt="DER Encomiendas">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="small fw-bold text-primary mb-2">Implementación SQL (PostgreSQL)</p>
+                        <div class="p-3 rounded-3 bg-dark text-white overflow-auto" style="max-height: 400px;">
+                            <pre class="mb-0 small"><code>CREATE TABLE Clientes (
+    cliente_id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    documento VARCHAR(20) UNIQUE NOT NULL
+);
+
+CREATE TABLE Encomiendas (
+    encomienda_id SERIAL PRIMARY KEY,
+    descripcion TEXT,
+    peso DECIMAL(10,2)
+);
+
+CREATE TABLE Envios (
+    envio_id SERIAL PRIMARY KEY,
+    cliente_remitente_id INT,
+    encomienda_id INT,
+    fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    costo_total DECIMAL(12,2),
+    CONSTRAINT fk_cliente FOREIGN KEY (cliente_remitente_id) 
+    REFERENCES Clientes(cliente_id),
+    CONSTRAINT fk_encomienda FOREIGN KEY (encomienda_id) 
+    REFERENCES Encomiendas(encomienda_id)
+);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SISTEMA RETAIL -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-primary">
+                <h4 class="fw-bold text-dark mb-4"><i class="bi bi-cart4 me-2 text-primary"></i>2. Sistema de Venta
+                    Retail</h4>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6 order-lg-2">
+                        <p class="small fw-bold text-primary mb-2 text-lg-end">Modelo Entidad-Relación (DER)</p>
+                        <div class="text-center p-3 bg-white rounded border h-100 d-flex align-items-center">
+                            <img src="img/DER_Retail.png" class="img-fluid rounded shadow-sm" alt="DER Retail">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 order-lg-1">
+                        <p class="small fw-bold text-primary mb-2">Implementación SQL (PostgreSQL)</p>
+                        <div class="p-3 rounded-3 bg-dark text-white overflow-auto" style="max-height: 400px;">
+                            <pre class="mb-0 small"><code>CREATE TABLE Productos (
+    producto_id SERIAL PRIMARY KEY,
+    nombre_producto VARCHAR(100) NOT NULL,
+    precio_actual DECIMAL(12,2) NOT NULL
+);
+
+CREATE TABLE Ventas (
+    venta_id SERIAL PRIMARY KEY,
+    fecha_venta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_venta DECIMAL(12,2)
+);
+
+CREATE TABLE Detalle_Venta (
+    detalle_id SERIAL PRIMARY KEY,
+    venta_id INT,
+    producto_id INT,
+    cantidad INT NOT NULL,
+    precio_unitario_historico DECIMAL(12,2) NOT NULL,
+    CONSTRAINT fk_venta FOREIGN KEY (venta_id) REFERENCES Ventas(venta_id),
+    CONSTRAINT fk_producto FOREIGN KEY (producto_id) REFERENCES Productos(producto_id)
+);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SISTEMA BANCARIO -->
+        <div class="card shadow-sm border-0 rounded-4 mb-5">
+            <div class="card-body p-4 border-start border-4 border-primary">
+                <h4 class="fw-bold text-dark mb-4"><i class="bi bi-bank me-2 text-primary"></i>3. Sistema Administrador
+                    de Cuentas</h4>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <p class="small fw-bold text-primary mb-2">Modelo Entidad-Relación (DER)</p>
+                        <div class="text-center p-3 bg-white rounded border h-100 d-flex align-items-center">
+                            <img src="img/DER_Banco.png" class="img-fluid rounded shadow-sm" alt="DER Banco">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="small fw-bold text-primary mb-2">Implementación SQL (PostgreSQL)</p>
+                        <div class="p-3 rounded-3 bg-dark text-white overflow-auto" style="max-height: 400px;">
+                            <pre class="mb-0 small"><code>CREATE TABLE Tipos_Cuenta (
+    tipo_id SERIAL PRIMARY KEY,
+    nombre_tipo VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Cuentas (
+    cuenta_id SERIAL PRIMARY KEY,
+    numero_cuenta VARCHAR(20) UNIQUE NOT NULL,
+    cliente_id INT,
+    tipo_id INT,
+    saldo_actual DECIMAL(15,2) DEFAULT 0.00,
+    CONSTRAINT fk_cliente_banco FOREIGN KEY (cliente_id) REFERENCES Clientes_Banco(cliente_id),
+    CONSTRAINT fk_tipo_cuenta FOREIGN KEY (tipo_id) REFERENCES Tipos_Cuenta(tipo_id)
+);
+
+CREATE TABLE Transacciones (
+    transaccion_id SERIAL PRIMARY KEY,
+    cuenta_id INT,
+    tipo_movimiento VARCHAR(20) CHECK (tipo_movimiento IN ('Deposito', 'Giro', 'Transferencia')),
+    monto DECIMAL(15,2) NOT NULL,
+    fecha_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUMEN TÉCNICO Y JUSTIFICACIÓN -->
+        <div class="card border-0 shadow-lg rounded-4 mb-5 overflow-hidden">
+            <div class="card-header py-3 text-white text-center" style="background-color: #1e3a8a;">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-patch-check me-2"></i>Justificación de la Normalización</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4 text-start">
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 bg-light border-start border-4 border-success h-100">
+                            <p class="small fw-bold text-success mb-2"><i class="bi bi-truck me-1"></i>Envíos</p>
+                            <p class="small text-muted mb-0">Separamos remitente de carga física (3FN) para evitar
+                                redundancia y optimizar el historial de despachos sin repetir descripciones de paquetes.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 bg-light border-start border-4 border-warning h-100">
+                            <p class="small fw-bold text-warning mb-2"><i class="bi bi-receipt me-1"></i>Retail</p>
+                            <p class="small text-muted mb-0">Implementamos cabecera-detalle para mantener precios
+                                históricos. Si el producto cambia de valor, las ventas pasadas no se alteran.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 bg-light border-start border-4 border-info h-100">
+                            <p class="small fw-bold text-info mb-2"><i class="bi bi-safe me-1"></i>Banca</p>
+                            <p class="small text-muted mb-0">Normalizamos tipos de cuenta para gestionar reglas globales
+                                (como intereses) sin modificar individualmente los registros de clientes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Descarga -->
+                <div class="py-5 text-center">
+                    <h5 class="fw-bold mb-3 text-dark">Recursos del Proyecto</h5>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="sqlEncomienda.sql" download class="btn btn-outline-success px-4 rounded-pill fw-bold">
+                            <i class="bi bi-file-earmark-code me-2"></i>SQL Encomiendas
+                        </a>
+                        <a href="sqlRetail.sql" download
+                            class="btn btn-outline-warning px-4 rounded-pill fw-bold text-dark">
+                            <i class="bi bi-file-earmark-code me-2"></i>SQL Retail
+                        </a>
+                        <a href="sqlBanco.sql" download
+                            class="btn btn-outline-info px-4 rounded-pill fw-bold text-dark">
+                            <i class="bi bi-file-earmark-code me-2"></i>SQL Banco
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Botón de ir al inicio -->
+                <div class="mt-4 text-center border-top pt-3">
+                    <a href="../../index.html" class="btn btn-link text-decoration-none fw-bold" style="color: #1e3a8a"
+                        ;>
+                        <i class="bi bi-arrow-left-circle-fill me-1"></i> Volver al Inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <footer class="text-white text-center py-4 mt-5" style="background-color: #1e3a8a;">
+        <p class="mb-0 small">Modelado Relacional | Normalización 3FN | 2026</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
