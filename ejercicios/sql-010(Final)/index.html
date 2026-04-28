@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Final: SQL & Normalización</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container py-5">
+        <div class="card shadow-lg border-0 rounded-4 mb-5"
+            style="background: linear-gradient(135deg, #1e3a8a 0%, #111827 100%); color: white;">
+            <div class="card-body p-5">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi- Mortarboard-fill me-3" style="font-size: 3rem;"></i>
+                    <h1 class="display-5 fw-bold mb-0">Evaluación Final: Teleseries SQL</h1>
+                </div>
+                <p class="lead opacity-75">
+                    Resolución de consultas complejas y reestructuración de datos mediante <strong>Normalización de
+                        Tercera Forma Normal (3FN)</strong>.
+                </p>
+                <div class="mt-4">
+                    <span class="badge rounded-pill bg-white text-primary px-3 py-2 me-2">JOINS Avanzados</span>
+                    <span class="badge rounded-pill bg-white text-primary px-3 py-2 me-2">Migración DML</span>
+                    <span class="badge rounded-pill bg-white text-primary px-3 py-2">Integridad Referencial</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATOS INICIALES -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-primary">
+                <h4 class="fw-bold text-dark mb-4"><i class="bi bi-table me-2 text-primary"></i>1. Estado Inicial
+                    (Denormalizado)</h4>
+                <p class="text-muted small">Carga de datos desde <code>evaluacion.sql</code> para las tablas planas de
+                    reparto.</p>
+
+                <div class="row g-4 text-center">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white border rounded">
+                            <h6 class="fw-bold">Reparto: Soltera Otra Vez</h6>
+                            <img src="img/reparto_soltera_otra_vez.png" class="img-fluid rounded shadow-sm"
+                                alt="Tabla Soltera">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white border rounded">
+                            <h6 class="fw-bold">Reparto: Papi Ricky</h6>
+                            <img src="img/reparto_papi_ricky.png" class="img-fluid rounded shadow-sm"
+                                alt="Tabla Papi Ricky">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESOLUCIÓN DE QUERIES -->
+        <div class="row g-4 mb-5">
+            <!-- Query 01 -->
+            <div class="col-12">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4 border-start border-4 border-success">
+                        <h5 class="fw-bold text-success"><i class="bi bi-intersect me-2"></i>Consulta 01: Actores que
+                            participan en ambas teleseries</h5>
+                        <p class="small text-muted">Actores en ambas producciones con sueldo total sumado.</p>
+                        <div class="bg-dark text-info p-3 rounded-3 mb-3">
+                            <pre class="m-0 small"><code>SELECT s.nombre, s.sueldo AS sueldo_soltera, p.sueldo AS sueldo_papi, (s.sueldo + p.sueldo) AS sueldo_sumado
+FROM reparto_soltera_otra_vez s
+JOIN reparto_papi_ricky p ON s.nombre = p.nombre
+ORDER BY s.nombre ASC;</code></pre>
+                        </div>
+                        <img src="img/query01.png" class="img-fluid rounded border shadow-sm" alt="Resultado Query 01">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Query 02 & 03 -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4 border-start border-4 border-warning">
+                        <h6 class="fw-bold">Consulta 02: Todos los actores que participaron exclusivamente con sueldo
+                            mayor a...</h6>
+                        <div class="bg-dark text-info p-2 rounded-3 mb-2">
+                            <pre class="m-0" style="font-size: 0.75rem;"><code>SELECT s.nombre FROM reparto_soltera_otra_vez s
+LEFT JOIN reparto_papi_ricky p ON s.nombre = p.nombre
+WHERE p.nombre IS NULL AND s.sueldo > 90;</code></pre>
+                        </div>
+                        <img src="img/query02.png" class="img-fluid w-100 rounded border" alt="Resultado Query 02">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                    <div class="card-body p-4 border-start border-4 border-info">
+                        <h6 class="fw-bold">Consulta 03: Solo los actores con sueldo inferior a 85 que actuaron en...
+                        </h6>
+                        <div class="bg-dark text-info p-2 rounded-3 mb-2">
+                            <pre class="m-0" style="font-size: 0.75rem;"><code>SELECT COALESCE(s.nombre, p.nombre) FROM s
+FULL OUTER JOIN p ON s.nombre = p.nombre
+WHERE (s.nombre IS NULL OR p.nombre IS NULL) 
+AND COALESCE(s.sueldo, p.sueldo) < 85;</code></pre>
+                        </div>
+                        <img src="img/query03.png" class="img-fluid w-100 rounded border" alt="Resultado Query 03">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NORMALIZACIÓN Y MODELO MEJORADO -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-primary">
+                <h4 class="fw-bold text-dark mb-4"><i class="bi bi-diagram-3-fill me-2 text-primary"></i>2.
+                    Normalización y Estructura (3FN)</h4>
+
+                <div class="row g-4 mb-4 align-items-center">
+                    <div class="col-lg-5">
+                        <p class="small fw-bold text-primary">Diagrama Entidad-Relación (DER)</p>
+                        <div class="p-2 border rounded bg-white text-center">
+                            <img src="img/DER.png" class="img-fluid" alt="Diagrama de Relación">
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <p class="small fw-bold text-primary">Poblamiento y Tablas Maestras</p>
+                        <div class="row g-2">
+                            <div class="col-4"><img src="img/actores.png" class="img-fluid border rounded"
+                                    alt="Tabla Actores"></div>
+                            <div class="col-4"><img src="img/teleserie.png" class="img-fluid border rounded"
+                                    alt="Tabla Teleseries"></div>
+                            <div class="col-4"><img src="img/reparto.png" class="img-fluid border rounded"
+                                    alt="Tabla Reparto"></div>
+                        </div>
+                        <div class="mt-3 p-3 bg-dark text-white rounded-3">
+                            <pre class="m-0 small"><code>--Poblar Actores
+INSERT INTO actores (nombre)
+SELECT nombre FROM reparto_soltera_otra_vez
+UNION
+SELECT nombre FROM reparto_papi_ricky;
+
+--Poblar Teleseries
+INSERT INTO teleseries (titulo) VALUES ('Soltera Otra Vez'), ('Papi Ricky');
+
+--Poblar tabla Puente
+-- Insertar datos de Soltera Otra Vez
+INSERT INTO reparto_actores (actor_id, teleserie_id, es_protagonico, sueldo)
+SELECT a.actor_id, t.teleserie_id, r.protagonico, r.sueldo
+FROM reparto_soltera_otra_vez r
+JOIN actores a ON r.nombre = a.nombre
+JOIN teleseries t ON t.titulo = 'Soltera Otra Vez';
+
+-- Insertar datos de Papi Ricky
+INSERT INTO reparto_actores (actor_id, teleserie_id, es_protagonico, sueldo)
+SELECT a.actor_id, t.teleserie_id, r.protagonico, r.sueldo
+FROM reparto_papi_ricky r
+JOIN actores a ON r.nombre = a.nombre
+JOIN teleseries t ON t.titulo = 'Papi Ricky';</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-lg border-0 rounded-4 mb-5 overflow-hidden">
+            <div class="card-header text-white py-3 text-center" style="background-color: #1e3a8a !important;">
+                <h5 class="mb-0 fw-bold">Resultado Final: Consulta Multitabla</h5>
+            </div>
+            <div class="card-body p-4 text-center">
+                <p class="text-muted">Obtención de todos los actores protagónicos vinculados a sus respectivas
+                    teleseries desde el modelo normalizado.</p>
+
+                <div class="bg-dark text-info p-4 rounded-3 mb-4 border shadow-sm text-start">
+                    <pre class="m-0" style="font-size: 0.9rem; line-height: 1.5;"><code>SELECT t.titulo AS teleserie, a.nombre AS actor 
+FROM reparto_actores ra
+JOIN actores a ON ra.actor_id = a.actor_id
+JOIN teleseries t ON ra.teleserie_id = t.teleserie_id
+WHERE ra.es_protagonico = true;</code></pre>
+                </div>
+
+                <img src="img/query04.png" class="img-fluid rounded border shadow" alt="Query Final Normalizada">
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card-body p-4 border-start border-4 border-info">
+                <h5 class="fw-bold text-dark mb-3">
+                    <i class="bi bi-diagram-3 me-2 text-info"></i>Análisis de Transformación: De Datos Planos a
+                    Integridad Relacional
+                </h5>
+
+                <p class="text-muted">
+                    Al inicio del proyecto, trabajamos con datos <strong>"aplanados"</strong>: los nombres de los
+                    actores se repetían en cada tabla de teleserie, lo que generaba una duplicidad innecesaria y un alto
+                    riesgo de errores tipográficos o inconsistencias al actualizar la información. Esta estructura
+                    denormalizada dificultaba la gestión de los datos a gran escala.
+                </p>
+
+                <p class="text-muted">
+                    Para resolverlo, aplicamos una reestructuración basada en los principios de la <strong>Tercera Forma
+                        Normal (3FN)</strong>, fundamentada en tres pilares estratégicos:
+                </p>
+
+                <ul class="text-muted mb-4">
+                    <li class="mb-2">
+                        <strong>Entidades Maestras:</strong> Separamos la información en las tablas <code>actores</code>
+                        y <code>teleseries</code>. Esto garantiza una <strong>fuente única de verdad</strong>; si un
+                        actor cambia su nombre artístico, solo se edita en un registro y el cambio se refleja
+                        automáticamente en todos sus trabajos vinculados.
+                    </li>
+                    <li class="mb-2">
+                        <strong>Tabla Puente:</strong> Implementamos la tabla <code>reparto_actores</code> para
+                        gestionar la relación "muchos a muchos". Esta tabla centraliza la lógica de negocio, alojando
+                        atributos que solo existen cuando un actor se une a un proyecto, como el <strong>sueldo</strong>
+                        y el <strong>rol protagónico</strong>.
+                    </li>
+                    <li>
+                        <strong>Integridad y Escalabilidad:</strong> Mediante el uso de llaves foráneas (FK), aseguramos
+                        que no existan datos "huérfanos". Este modelo permite que el sistema sea totalmente escalable,
+                        soportando la adición de nuevas producciones sin comprometer la coherencia ni el rendimiento de
+                        la base de datos.
+                    </li>
+                </ul>
+
+                <div class="bg-light p-3 rounded-3 border-start border-3 border-dark">
+                    <p class="text-dark mb-0 small">
+                        <strong>Conclusión:</strong> Hemos transformado una lista estática en una base de datos
+                        relacional, eliminando la redundancia y optimizando el sistema para consultas complejas de
+                        manera profesional.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de Descarga -->
+        <div class="py-5 text-center">
+            <h5 class="fw-bold mb-3 text-dark">Recursos del Proyecto</h5>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="evaluacionModulo5.sql" download class="btn px-4 text-white rounded-pill fw-bold"
+                    style="background-color: #1e3a8a !important;">
+                    <i class="bi bi-file-earmark-code me-2"></i>Descargar Script
+                </a>
+            </div>
+        </div>
+
+        <!-- Botón de ir al inicio -->
+        <div class="mt-4 text-center border-top pt-3">
+            <a href="../../index.html" class="btn btn-link text-decoration-none fw-bold" style="color: #1e3a8a" ;>
+                <i class="bi bi-arrow-left-circle-fill me-1"></i> Volver al Inicio
+            </a>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
